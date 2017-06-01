@@ -59,28 +59,28 @@ public:
 	};
 
 	ContactMgr(Configuration* conf) {
-		_M_contact_listener_enabled = conf->ExternalContactListenerEnabled;
+		m_contact_listener_enabled = conf->ExternalContactListenerEnabled;
 	}
 	virtual ~ContactMgr() { }
 
 	/// Add an external contact listener.
 	void AddContactListener(ContactListener* listener) {
-		_M_contact_listener.insert(listener);
+		m_contact_listener.insert(listener);
 	}
 
 	/// Remove an external contact listener.
 	void RemoveContactListener(ContactListener* listener) {
-		_M_contact_listener.erase(listener);
+		m_contact_listener.erase(listener);
 	}
 
 	/// Return true if external contact listeners are enabled, otherwise false.
 	bool IsContactListenerEnabled() const {
-		return _M_contact_listener_enabled;
+		return m_contact_listener_enabled;
 	}
 
 	/// Enable / disable external contact listeners.
 	void SetContactListenerEnabled(bool flag) {
-		_M_contact_listener_enabled = flag;
+		m_contact_listener_enabled = flag;
 	}
 
 protected:
@@ -90,7 +90,7 @@ protected:
 				std::bind(_M_BeginContact_Wrapper, std::placeholders::_1, std::placeholders::_2, contact);
 		_M_Contact_Solver(contact, function);
 		if(IsContactListenerEnabled()) {
-			for(auto listener : _M_contact_listener) {
+			for(auto listener : m_contact_listener) {
 				listener -> BeginContact(contact);
 			}
 		}
@@ -101,7 +101,7 @@ protected:
 				std::bind(_M_EndContact_Wrapper, std::placeholders::_1, std::placeholders::_2, contact);
 		_M_Contact_Solver(contact, function);
 		if(IsContactListenerEnabled()) {
-			for(auto listener : _M_contact_listener) {
+			for(auto listener : m_contact_listener) {
 				listener -> EndContact(contact);
 			}
 		}
@@ -112,7 +112,7 @@ protected:
 				std::bind(_M_PreSolve_Wrapper, std::placeholders::_1, std::placeholders::_2, contact, oldManifold);
 		_M_Contact_Solver(contact, function);
 		if(IsContactListenerEnabled()) {
-			for(auto listener : _M_contact_listener) {
+			for(auto listener : m_contact_listener) {
 				listener -> PreSolve(contact, oldManifold);
 			}
 		}
@@ -123,7 +123,7 @@ protected:
 				std::bind(_M_PostSolve_Wrapper, std::placeholders::_1, std::placeholders::_2, contact, impulse);
 		_M_Contact_Solver(contact, function);
 		if(IsContactListenerEnabled()) {
-			for(auto listener : _M_contact_listener) {
+			for(auto listener : m_contact_listener) {
 				listener -> PostSolve(contact, impulse);
 			}
 		}
@@ -188,8 +188,8 @@ protected:
 	}
 
 private:
-	bool _M_contact_listener_enabled;
-	std::set<ContactListener*> _M_contact_listener;
+	bool m_contact_listener_enabled;
+	std::set<ContactListener*> m_contact_listener;
 };
 
 } /* namespace assa2d */

@@ -28,59 +28,59 @@ public:
 	};
 
 	SceneMgr(Configuration* conf) : bul::manager::SceneMgr(conf),
-			_M_timestep(conf->TimeStep), _M_velocity_iterations(conf->VelocityIterations),
-			_M_position_iterations(conf->PositionIterations), _M_world(conf->World),
-			_M_contact_manager(&conf->ContactManager) {
-		if(_M_world == nullptr) {
+			m_timestep(conf->TimeStep), m_velocity_iterations(conf->VelocityIterations),
+			m_position_iterations(conf->PositionIterations), m_world(conf->World),
+			m_contact_manager(&conf->ContactManager) {
+		if(m_world == nullptr) {
 			throw std::runtime_error("assa2d::SceneMgr::SceneMgr() : b2World nullptr.");
 		}
 
-		_M_world -> SetContactListener(&_M_contact_manager);
+		m_world -> SetContactListener(&m_contact_manager);
 
 		b2BodyDef bd;
 		bd.type = b2_staticBody;
 		bd.position.Set(0.0f, 0.0f);
-		_M_ground = _M_world->CreateBody(&bd);
+		m_ground = m_world->CreateBody(&bd);
 	}
 
 	virtual ~SceneMgr() {
-		_M_world -> DestroyBody(_M_ground);
-		_M_ground = nullptr;
+		m_world -> DestroyBody(m_ground);
+		m_ground = nullptr;
 
-		_M_world -> SetContactListener(nullptr);
+		m_world -> SetContactListener(nullptr);
 	}
 
 	/// Getters.
 	float32 GetTimeStep() const {
-		return _M_timestep;
+		return m_timestep;
 	}
 
 	int32 GetVelocityIterations() const {
-		return _M_velocity_iterations;
+		return m_velocity_iterations;
 	}
 
 	int32 GetPositionIterations() const {
-		return _M_position_iterations;
+		return m_position_iterations;
 	}
 
 	b2World* GetWorld() {
-		return _M_world;
+		return m_world;
 	}
 
 	const b2World* GetWorld() const {
-		return _M_world;
+		return m_world;
 	}
 
 	ContactMgr & GetContactMgr() const {
-		return const_cast<ContactMgr&>(_M_contact_manager);
+		return const_cast<ContactMgr&>(m_contact_manager);
 	}
 
 	b2Body* GetGround() {
-		return _M_ground;
+		return m_ground;
 	}
 
 	const b2Body* GetGround() const {
-		return _M_ground;
+		return m_ground;
 	}
 
 protected:
@@ -89,22 +89,22 @@ protected:
 
 	/// Called after all elements take their actions.
 	virtual void PostStep() override final {
-		_M_world -> Step(_M_timestep, _M_velocity_iterations, _M_position_iterations);
+		m_world -> Step(m_timestep, m_velocity_iterations, m_position_iterations);
 	}
 
 private:
 	template<typename>
 	friend class Accessor;
 
-	float32 const _M_timestep;
-	int32 const _M_velocity_iterations;
-	int32 const _M_position_iterations;
+	float32 const m_timestep;
+	int32 const m_velocity_iterations;
+	int32 const m_position_iterations;
 
-	b2World* const _M_world;
+	b2World* const m_world;
 
-	ContactMgr _M_contact_manager;
+	ContactMgr m_contact_manager;
 
-	b2Body* _M_ground;
+	b2Body* m_ground;
 };
 
 } /* namespace assa2d */
