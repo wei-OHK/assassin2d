@@ -57,6 +57,9 @@ protected:
 	}
 
 private:
+	template<typename>
+	friend class Accessor;
+
 	assa2d::Component* m_main_component;
 };
 

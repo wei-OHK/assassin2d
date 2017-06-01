@@ -19,6 +19,10 @@ typedef bul::manager::Monitor Monitor;
 
 typedef bul::dynamics::Node_Type Node_Type;
 
+/// Backdoors for full access.
+template<typename>
+class Accessor;
+
 /// Shape types.
 enum class ShapeType {
 	Circle,

@@ -71,12 +71,8 @@ public:
 		return _M_world;
 	}
 
-	ContactMgr & GetContactMgr() {
-		return _M_contact_manager;
-	}
-
-	ContactMgr const& GetContactMgr() const {
-		return _M_contact_manager;
+	ContactMgr & GetContactMgr() const {
+		return const_cast<ContactMgr&>(_M_contact_manager);
 	}
 
 	b2Body* GetGround() {
@@ -85,14 +81,6 @@ public:
 
 	const b2Body* GetGround() const {
 		return _M_ground;
-	}
-
-	/// Interface for Replay.
-	/// Do not use this method unless you understand how it works.
-	void _Replay_Step() {
-		PreStep();
-		_M_Step();
-		PostStep();
 	}
 
 protected:
@@ -105,6 +93,9 @@ protected:
 	}
 
 private:
+	template<typename>
+	friend class Accessor;
+
 	float32 const _M_timestep;
 	int32 const _M_velocity_iterations;
 	int32 const _M_position_iterations;
