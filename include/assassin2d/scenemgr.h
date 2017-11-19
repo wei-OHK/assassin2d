@@ -42,7 +42,6 @@ public:
 		bd.position.Set(0.0f, 0.0f);
 		m_ground = m_world->CreateBody(&bd);
 	}
-
 	virtual ~SceneMgr() {
 		m_world -> DestroyBody(m_ground);
 		m_ground = nullptr;

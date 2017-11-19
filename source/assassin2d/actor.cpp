@@ -13,4 +13,3 @@ Object::Object(Configuration* conf) : bul::dynamics::Object(conf),
 			_Rigid_Attachment(static_cast<assa2d::SceneMgr*>(GetSceneMgr())->GetWorld()) { }
 
 } /* namespace assa2d */
-
